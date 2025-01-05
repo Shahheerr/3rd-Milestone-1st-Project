@@ -13,11 +13,9 @@ async function getProduct(id: string) {
     return res.json()
 }
 
-// Update the type to reflect the actual params structure
-type tParams = { id: string };
-
-export default async function ProductPage({ params }: { params: tParams }) {
-    const product = await getProduct(params.id) // No need to await `params`, it is not a promise
+// Correct type for params
+export default async function ProductPage({ params }: { params: { id: string } }) {
+    const product = await getProduct(params.id)
 
     return (
         <div className="flex flex-col md:flex-row gap-8">
@@ -50,8 +48,9 @@ export default async function ProductPage({ params }: { params: tParams }) {
                         {[...Array(5)].map((_, i) => (
                             <Star
                                 key={i}
-                                className={`w-5 h-5 ${i < Math.round(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                                    }`}
+                                className={`w-5 h-5 ${
+                                    i < Math.round(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                                }`}
                             />
                         ))}
                     </div>
