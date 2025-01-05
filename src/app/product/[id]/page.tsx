@@ -12,17 +12,33 @@ async function getProduct(id: string) {
     }
     return res.json()
 }
-type tParams = Promise<{ id: string[] }>;
+
+// Update the type to reflect the actual params structure
+type tParams = { id: string };
+
 export default async function ProductPage({ params }: { params: tParams }) {
-    const product = await getProduct((await params).id)
+    const product = await getProduct(params.id) // No need to await `params`, it is not a promise
 
     return (
         <div className="flex flex-col md:flex-row gap-8">
             <div className="md:w-1/2">
-                <img src={product.thumbnail} alt={product.title} width="500" height="500" className="w-full h-auto rounded-lg shadow-lg" />
+                <img
+                    src={product.thumbnail}
+                    alt={product.title}
+                    width="500"
+                    height="500"
+                    className="w-full h-auto rounded-lg shadow-lg"
+                />
                 <div className="mt-4 grid grid-cols-5 gap-2">
                     {product.images.slice(0, 5).map((image: string, index: number) => (
-                        <img src={image} alt={`${product.title} ${index + 1}`} width="100" height="100" className="w-full h-20 object-cover rounded-md shadow" />
+                        <img
+                            key={index}
+                            src={image}
+                            alt={`${product.title} ${index + 1}`}
+                            width="100"
+                            height="100"
+                            className="w-full h-20 object-cover rounded-md shadow"
+                        />
                     ))}
                 </div>
             </div>
@@ -32,7 +48,11 @@ export default async function ProductPage({ params }: { params: tParams }) {
                 <div className="flex items-center mb-4">
                     <div className="flex items-center mr-2">
                         {[...Array(5)].map((_, i) => (
-                            <Star key={i} className={`w-5 h-5 ${i < Math.round(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
+                            <Star
+                                key={i}
+                                className={`w-5 h-5 ${i < Math.round(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                                    }`}
+                            />
                         ))}
                     </div>
                     <span className="text-gray-600">({product.rating.toFixed(1)})</span>
@@ -51,4 +71,3 @@ export default async function ProductPage({ params }: { params: tParams }) {
         </div>
     )
 }
-
