@@ -12,11 +12,9 @@ async function getProduct(id: string) {
     }
     return res.json()
 }
-
 type tParams = Promise<{ id: string[] }>;
-
 export default async function ProductPage({ params }: { params: tParams }) {
-    const product = await getProduct(params.id)
+    const product = await getProduct((await params).id)
 
     return (
         <div className="flex flex-col md:flex-row gap-8">
@@ -24,7 +22,7 @@ export default async function ProductPage({ params }: { params: tParams }) {
                 <img src={product.thumbnail} alt={product.title} width="500" height="500" className="w-full h-auto rounded-lg shadow-lg" />
                 <div className="mt-4 grid grid-cols-5 gap-2">
                     {product.images.slice(0, 5).map((image: string, index: number) => (
-                        <img src={image} alt={`${product.title} ${index + 1}`} width="100" height="100" class="w-full h-20 object-cover rounded-md shadow" />
+                        <img src={image} alt={`${product.title} ${index + 1}`} width="100" height="100" className="w-full h-20 object-cover rounded-md shadow" />
                     ))}
                 </div>
             </div>
