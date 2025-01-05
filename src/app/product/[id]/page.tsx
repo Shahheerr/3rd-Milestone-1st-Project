@@ -13,7 +13,9 @@ async function getProduct(id: string) {
     return res.json()
 }
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
+type tParams = Promise<{ id: string[] }>;
+
+export default async function ProductPage({ params }: { params: tParams }) {
     const product = await getProduct(params.id)
 
     return (
